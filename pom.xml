@@ -95,7 +95,7 @@
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
 				<version>3.0.8</version>
 				<configuration>
-					<inputSpec>api-docs.yaml</inputSpec>
+					<inputSpec>/src/services/${env.CI_FILE_NAME}</inputSpec>
 					<language/>
 					<configOptions>
 						<interfaceOnly>true</interfaceOnly>
