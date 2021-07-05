@@ -1,0 +1,55 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The branch to checkout when cutting the release."
+        required: true
+        default: "master"
+      releaseVersion:
+        description: "Default version to use when preparing a release."
+        required: true
+        default: "X.Y.Z"
+      developmentVersion:
+        description: "Default version to use for new local working copy."
+        required: true
+        default: "X.Y.Z-SNAPSHOT"
+      projectGroupId:
+        description: "Group id used on a new api client."
+        required: true
+      projectArtifactId:
+        description: "Artifact id used on a new api client."
+        required: true
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  greet:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}      
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - run: mvn --batch-mode --update-snapshots verify
+        env:
+          CI_GROUP_ID: ${{ github.event.inputs.projectGroupId }}
+          CI_ARTIFACT_ID: ${{ github.event.inputs.projectArtifactId }}
+          CI_VERSION: ${{ github.event.inputs.releaseVersion }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}      
+      - run: mkdir staging && cp target/*.jar staging
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Package
+          path: staging    
+ 
