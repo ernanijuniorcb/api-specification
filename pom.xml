@@ -13,21 +13,6 @@
 		<datatype-threetenbp-version>2.6.4</datatype-threetenbp-version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable -->
 		<dependency>
@@ -85,10 +70,6 @@
 	<build>
 
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
 			<!-- activate the plugin -->
 			<plugin>
 				<groupId>io.swagger.codegen.v3</groupId>
