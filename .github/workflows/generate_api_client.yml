@@ -11,11 +11,10 @@ on:
       releaseVersion:
         description: "Default version to use when preparing a release."
         required: true
-        default: "X.Y.Z"
-      developmentVersion:
-        description: "Default version to use for new local working copy."
-        required: true
         default: "X.Y.Z-SNAPSHOT"
+      apiFileName:
+        description: "File used to generate the client."
+        required: true
       projectGroupId:
         description: "Group id used on a new api client."
         required: true
@@ -45,6 +44,7 @@ jobs:
           CI_GROUP_ID: ${{ github.event.inputs.projectGroupId }}
           CI_ARTIFACT_ID: ${{ github.event.inputs.projectArtifactId }}
           CI_VERSION: ${{ github.event.inputs.releaseVersion }}
+          CI_FILE_NAME: ${{ github.event.inputs.apiFileName }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}      
       - run: mkdir staging && cp target/*.jar staging
