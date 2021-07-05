@@ -76,7 +76,7 @@
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
 				<version>3.0.8</version>
 				<configuration>
-					<inputSpec>/src/services/${env.CI_FILE_NAME}</inputSpec>
+					<inputSpec>src/services/${env.CI_FILE_NAME}</inputSpec>
 					<language/>
 					<configOptions>
 						<interfaceOnly>true</interfaceOnly>
@@ -89,10 +89,10 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<apiPackage>${project.groupId}/api</apiPackage>
-							<modelPackage>${project.groupId}/model</modelPackage>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>${project.artifactId}</artifactId>
+							<apiPackage>${env.CI_GROUP_ID}/api</apiPackage>
+							<modelPackage>${env.CI_GROUP_ID}/model</modelPackage>
+							<groupId>${env.CI_GROUP_ID}</groupId>
+							<artifactId>${env.CI_ARTIFACT_ID}</artifactId>
 							<artifactVersion>${project.version}</artifactVersion>
 							<language>java</language>
 							<library>resttemplate</library>
