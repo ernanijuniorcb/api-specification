@@ -7,20 +7,21 @@ on:
       branch:
         description: "The branch to checkout when cutting the release."
         required: true
-        default: "master"
-      releaseVersion:
-        description: "Default version to use when preparing a release."
-        required: true
-        default: "X.Y.Z-SNAPSHOT"
+        default: "develop"
       apiFileName:
         description: "File used to generate the client."
         required: true
       projectGroupId:
         description: "Group id used on a new api client."
         required: true
+        default: "com.carlsberg.cx"
       projectArtifactId:
         description: "Artifact id used on a new api client."
         required: true
+      version:
+        description: "Default version to use."
+        required: true
+        default: "X.Y.Z-SNAPSHOT"
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -43,13 +44,13 @@ jobs:
         env:
           CI_GROUP_ID: ${{ github.event.inputs.projectGroupId }}
           CI_ARTIFACT_ID: ${{ github.event.inputs.projectArtifactId }}
-          CI_VERSION: ${{ github.event.inputs.releaseVersion }}
+          CI_VERSION: ${{ github.event.inputs.version }}
           CI_FILE_NAME: ${{ github.event.inputs.apiFileName }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}      
       - run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@v2
         with:
-          name: Package
+          name: PackageApi
           path: staging    
  
