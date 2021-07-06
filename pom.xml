@@ -8,10 +8,10 @@
 		<version>2.4.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.carlsberg.cx</groupId>
-	<artifactId>swagger-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>swagger-client</name>
+	<groupId>${env.CI_GROUP_ID}</groupId>
+	<artifactId>${env.CI_ARTIFACT_ID}</artifactId>
+	<version>${env.CI_VERSION}</version>
+	<name>apiclient</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -115,7 +115,7 @@
 							<modelPackage>${env.CI_GROUP_ID}/model</modelPackage>
 							<groupId>${env.CI_GROUP_ID}</groupId>
 							<artifactId>${env.CI_ARTIFACT_ID}</artifactId>
-							<artifactVersion>${project.version}</artifactVersion>
+							<artifactVersion>${env.CI_VERSION}</artifactVersion>
 							<language>java</language>
 							<library>resttemplate</library>
 							<generateApiTests>true</generateApiTests>
