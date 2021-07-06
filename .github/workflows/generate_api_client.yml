@@ -7,18 +7,15 @@ on:
       branch:
         description: "The branch to checkout when cutting the release."
         required: true
-        default: "master"
-      releaseVersion:
-        description: "Default version to use when preparing a release."
-        required: true
-        default: "X.Y.Z"
-      developmentVersion:
-        description: "Default version to use for new local working copy."
+        default: "develop"
+      version:
+        description: "Default version to use when preparing a package."
         required: true
         default: "X.Y.Z-SNAPSHOT"
       projectGroupId:
         description: "Group id used on a new api client."
         required: true
+        default: "com.carlsberg.cx"
       projectArtifactId:
         description: "Artifact id used on a new api client."
         required: true
@@ -44,12 +41,12 @@ jobs:
         env:
           CI_GROUP_ID: ${{ github.event.inputs.projectGroupId }}
           CI_ARTIFACT_ID: ${{ github.event.inputs.projectArtifactId }}
-          CI_VERSION: ${{ github.event.inputs.releaseVersion }}
+          CI_VERSION: ${{ github.event.inputs.version }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ github.token }}      
       - run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@v2
         with:
-          name: Package
+          name: PackageApi
           path: staging    
  
