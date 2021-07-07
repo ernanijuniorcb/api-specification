@@ -1,0 +1,332 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0 
+paths:
+  /services/loyalty/tx:
+    post:
+      tags:
+      - loyalty-controller
+      operationId: lockTx
+      parameters:
+      - name: salesOrg
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: outletId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: eventId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - REDEEM
+          - COLLECT
+          - REDEEM_COMMIT
+          - COLLECT_COMMIT
+          - MANUAL_ADD
+          - MANUAL_REMOVE
+      - name: amount
+        in: query
+        required: true
+        schema:
+          type: number
+      - name: comment
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: createdBy
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+  /services/loyalty/balance:
+    get:
+      tags:
+      - member-controller
+      operationId: getBalance
+      parameters:
+      - name: salesOrg
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: outletId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/MemberBalanceDto'
+  /services/loyalty/tx/{eventId}/commit:
+    post:
+      tags:
+      - loyalty-controller
+      operationId: commitTx
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: salesOrg
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: outletId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - REDEEM
+          - COLLECT
+          - REDEEM_COMMIT
+          - COLLECT_COMMIT
+          - MANUAL_ADD
+          - MANUAL_REMOVE
+      responses:
+        "200":
+          description: default response
+  /services/loyalty/tx/history:
+    get:
+      tags:
+      - loyalty-controller
+      operationId: getHistory
+      parameters:
+      - name: salesOrg
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: outletId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          maximum: 1000
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: default response
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/PagedModelEntityModelTxHistoryDto'
+  /services/loyalty/tx/{eventId}/rollback:
+    post:
+      tags:
+      - loyalty-controller
+      operationId: rollbackTx
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: salesOrg
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: outletId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - REDEEM
+          - COLLECT
+          - REDEEM_COMMIT
+          - COLLECT_COMMIT
+          - MANUAL_ADD
+          - MANUAL_REMOVE
+      responses:
+        "200":
+          description: default response
+components:
+  schemas:
+    MemberBalanceDto:
+      type: object
+      properties:
+        totalPoints:
+          type: number
+        availablePoints:
+          type: number
+    EntityModelTxHistoryDto:
+      type: object
+      properties:
+        salesOrg:
+          type: string
+        outletId:
+          type: string
+        amount:
+          type: number
+        status:
+          type: string
+          enum:
+          - LOCKED
+          - COMMIT
+          - ROLLBACK
+          - EXPIRED
+        eventId:
+          type: string
+        expiry:
+          type: string
+          format: date-time
+        availabilityDate:
+          type: string
+          format: date-time
+        operation:
+          type: string
+        comment:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        createEid:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+        hreflang:
+          type: string
+        media:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        deprecation:
+          type: string
+        profile:
+          type: string
+        name:
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+    PagedModelEntityModelTxHistoryDto:
+      type: object
+      properties:
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityModelTxHistoryDto'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    TxHistoryDto:
+      type: object
+      properties:
+        salesOrg:
+          type: string
+        outletId:
+          type: string
+        amount:
+          type: number
+        status:
+          type: string
+          enum:
+          - LOCKED
+          - COMMIT
+          - ROLLBACK
+          - EXPIRED
+        eventId:
+          type: string
+        expiry:
+          type: string
+          format: date-time
+        availabilityDate:
+          type: string
+          format: date-time
+        operation:
+          type: string
+        comment:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        modifiedBy:
+          type: string
+        createEid:
+          type: string
