@@ -11,8 +11,8 @@
 	<groupId>${env.CI_GROUP_ID}</groupId>
 	<artifactId>${env.CI_ARTIFACT_ID}</artifactId>
 	<version>${env.CI_VERSION}</version>
-	<name>apiclient</name>
-	<description>Demo project for Spring Boot</description>
+	<name>${env.CI_SERVICE_NAME}</name>
+	<description>Demo project for Generate Api Client</description>
 	<properties>
 		<java.version>11</java.version>
 		<threetenbp-version>1.3.8</threetenbp-version>
@@ -98,7 +98,7 @@
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
 				<version>3.0.8</version>
 				<configuration>
-					<inputSpec>src/services/${env.CI_FILE_NAME}</inputSpec>
+					<inputSpec>src/dist/${CI_SERVICE_NAME}/${CI_SERVICE_NAME}-${env.CI_DIST_VERSION}.yaml</inputSpec>
 					<language/>
 					<configOptions>
 						<interfaceOnly>true</interfaceOnly>
@@ -136,11 +136,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>sonatype-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 </project>
