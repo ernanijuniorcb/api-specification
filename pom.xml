@@ -98,7 +98,7 @@
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
 				<version>3.0.8</version>
 				<configuration>
-					<inputSpec>src/dist/${CI_SERVICE_NAME}/${CI_SERVICE_NAME}-${env.CI_DIST_VERSION}.yaml</inputSpec>
+					<inputSpec>dist/${CI_SERVICE_NAME}/${CI_SERVICE_NAME}-${env.CI_DIST_VERSION}.yaml</inputSpec>
 					<language/>
 					<configOptions>
 						<interfaceOnly>true</interfaceOnly>
