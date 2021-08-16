@@ -136,8 +136,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-		<profiles>
+	</build>
+	
+	<profiles>
 			<profile>
 				<id>github</id>
 				<activation>
@@ -154,6 +155,5 @@
 					</repository>
 				</distributionManagement>
 			</profile>
-		</profiles>
-	</build>
+		</profiles>	
 </project>
