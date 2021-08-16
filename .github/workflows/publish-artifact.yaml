@@ -1,0 +1,56 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual workflow
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The branch to checkout."
+        required: true
+        default: "develop"
+      apiServiceName:
+        description: "Api Service Name to generate the client."
+        required: true
+      apiDistVersion:
+        description: "Distribution file version to generate the client." 
+        required: true
+        default: v1.0 
+      projectGroupId:
+        description: "Group id used on a new api client."
+        required: true
+        default: "com.carlsberg.cx"
+      projectArtifactId:
+        description: "Artifact id used on a new api client."
+        required: true
+      version:
+        description: "Project version to use."
+        required: true
+        default: "1.0.0-SNAPSHOT"
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job to create and publish a api package
+  build_api:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}      
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Deploy to GitHub
+        run: mvn --batch-mode -DuseGitHubPackages=true deploy
+        env:
+          CI_GROUP_ID: ${{ github.event.inputs.projectGroupId }}
+          CI_ARTIFACT_ID: ${{ github.event.inputs.projectArtifactId }}
+          CI_VERSION: ${{ github.event.inputs.version }}
+          CI_SERVICE_NAME: ${{ github.event.inputs.apiServiceName }}
+          CI_DIST_VERSION: ${{ github.event.inputs.apiDistVersion }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}      
